@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Feliz Vida 🎉 - Gabryel</title>
+
+  <style>
+    :root{
+      --bg1:#120b24;
+      --bg2:#26164b;
+      --panel:rgba(18,12,34,.94);
+      --line:rgba(255,255,255,.08);
+      --text:#fff8e7;
+      --muted:#d8cfea;
+      --gold:#ffd166;
+      --pink:#ff8fab;
+      --blue:#8ecae6;
+      --shadow:0 14px 40px rgba(0,0,0,.38);
+      --radius:22px;
+    }
+
+    *{
+      box-sizing:border-box;
+      -webkit-tap-highlight-color:transparent;
+    }
+
+    html,body{
+      margin:0;
+      height:100%;
+      overflow:hidden;
+      background:radial-gradient(circle at top, var(--bg2) 0%, var(--bg1) 48%, #08040f 100%);
+      color:var(--text);
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+    }
+
+    .screen{
+      position:fixed;
+      inset:0;
+      display:none;
+      padding:14px;
+      overflow:auto;
+    }
+
+    .screen.active{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+
+    .wrap{
+      width:min(100%,760px);
+      margin:auto;
+    }
+
+    .card{
+      background:var(--panel);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      overflow:hidden;
+      box-shadow:var(--shadow);
+      backdrop-filter:blur(10px);
+    }
+
+    .hero{
+      display:block;
+      width:100%;
+      height:auto;
+      max-height:72vh;
+      object-fit:contain;
+      background:#0b0715;
+    }
+
+    .content{
+      padding:16px;
+    }
+
+    h1,h2,p{
+      margin:0 0 12px;
+    }
+
+    h1{
+      font-size:clamp(1.6rem,5vw,2.25rem);
+      line-height:1.05;
+    }
+
+    h2{
+      font-size:clamp(1.2rem,4vw,1.6rem);
+    }
+
+    p{
+      color:var(--muted);
+      line-height:1.45;
+    }
+
+    .center{
+      text-align:center;
+    }
+
+    .badge{
+      display:inline-block;
+      padding:6px 10px;
+      border-radius:999px;
+      background:rgba(255,209,102,.14);
+      color:#ffe39a;
+      font-weight:700;
+      margin-bottom:8px;
+    }
+
+    .btns{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-top:14px;
+    }
+
+    .btn{
+      border:0;
+      border-radius:16px;
+      padding:14px 16px;
+      min-height:48px;
+      cursor:pointer;
+      font:inherit;
+      font-weight:800;
+      box-shadow:var(--shadow);
+      flex:1 1 180px;
+      background:linear-gradient(180deg,var(--gold),#ffb703);
+      color:#332000;
+    }
+
+    .btn.alt{
+      background:linear-gradient(180deg,#90e0ef,#48cae4);
+      color:#032b36;
+    }
+
+    .btn.ghost{
+      background:#2a1f48;
+      color:var(--text);
+      border:1px solid var(--line);
+    }
+
+    .story-shell{
+      width:min(100%,840px);
+      margin:auto;
+      display:grid;
+      gap:12px;
+    }
+
+    .topbar{
+      display:flex;
+      justify-content:space-between;
+      gap:8px;
+      flex-wrap:wrap;
+      padding:10px 12px;
+      background:rgba(10,7,21,.55);
+      border-bottom:1px solid var(--line);
+      font-size:.93rem;
+      font-weight:700;
+    }
+
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      padding:8px 10px;
+      border-radius:999px;
+      background:rgba(255,255,255,.07);
+      border:0;
+      color:var(--text);
+      font:inherit;
+    }
+
+    .scene{
+      position:relative;
+      overflow:hidden;
+      border-radius:var(--radius);
+      border:1px solid var(--line);
+      background:#10091f;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      min-height:280px;
+    }
+
+    .scene img{
+      display:block;
+      width:100%;
+      height:auto;
+      max-height:72vh;
+      object-fit:contain;
+      background:#10091f;
+    }
+
+    .overlay{
+      position:absolute;
+      inset:0;
+      background:linear-gradient(180deg,rgba(0,0,0,.08) 0%,rgba(0,0,0,.00) 35%,rgba(0,0,0,.40) 100%);
+      pointer-events:none;
+    }
+
+    .chapter-title{
+      position:absolute;
+      left:12px;
+      right:12px;
+      bottom:10px;
+      padding:10px 12px;
+      border-radius:14px;
+      background:rgba(10,7,21,.55);
+      backdrop-filter:blur(6px);
+      font-weight:800;
+      letter-spacing:.02em;
+    }
+
+    .dialogue{
+      background:rgba(16,9,31,.96);
+      border:1px solid var(--line);
+      border-radius:18px;
+      padding:14px;
+      box-shadow:var(--shadow);
+    }
+
+    .speaker{
+      color:#ffe39a;
+      font-weight:800;
+      margin-bottom:6px;
+    }
+
+    .text{
+      white-space:pre-line;
+      line-height:1.6;
+      min-height:132px;
+      color:var(--text);
+      font-size:1rem;
+    }
+
+    .hint{
+      font-size:.9rem;
+      color:#bfb3d8;
+      margin-top:8px;
+    }
+
+    .choices{
+      display:grid;
+      gap:10px;
+      margin-top:12px;
+    }
+
+    .choice{
+      border:1px solid var(--line);
+      background:#2a1f48;
+      color:var(--text);
+      border-radius:14px;
+      padding:14px;
+      text-align:left;
+      font:inherit;
+      font-weight:700;
+      cursor:pointer;
+      transition:transform .15s ease, background .2s ease;
+    }
+
+    .choice:active{
+      transform:scale(.98);
+    }
+
+    .choice.primary{
+      background:linear-gradient(180deg,#3e2d68,#2a1f48);
+    }
+
+    .progress{
+      height:8px;
+      border-radius:999px;
+      overflow:hidden;
+      background:rgba(255,255,255,.08);
+      margin-top:10px;
+    }
+
+    .bar{
+      height:100%;
+      width:0%;
+      background:linear-gradient(90deg,var(--pink),var(--gold));
+      transition:width .35s ease;
+    }
+
+    .ending{
+      white-space:pre-line;
+      line-height:1.65;
+      font-size:1rem;
+      padding:18px;
+    }
+
+    .tiny{
+      font-size:.86rem;
+      color:#bfb3d8;
+    }
+
+    .fade{
+      animation:fade .35s ease;
+    }
+
+    @keyframes fade{
+      from{
+        opacity:.2;
+        transform:translateY(6px);
+      }
+      to{
+        opacity:1;
+        transform:none;
+      }
+    }
+
+    .fade-final{
+      margin-top:8px;
+      font-size:1rem;
+      opacity:0;
+      animation:fadeFinal 3s ease forwards 1.2s;
+      letter-spacing:.04em;
+      color:#ffe39a;
+    }
+
+    @keyframes fadeFinal{
+      from{
+        opacity:0;
+        transform:translateY(6px);
+      }
+      to{
+        opacity:1;
+        transform:none;
+      }
+    }
+
+    .memory-overlay{
+      position:fixed;
+      inset:0;
+      display:none;
+      align-items:center;
+      justify-content:center;
+      background:rgba(4,3,10,.18);
+      z-index:50;
+      overflow:hidden;
+    }
+
+    .memory-overlay.active{
+      display:flex;
+      animation:memoryDarken 2.8s ease forwards;
+    }
+
+    .memory-inner{
+      position:relative;
+      width:min(92vw,720px);
+      min-height:70vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      padding:24px;
+    }
+
+    .memory-quote{
+      position:relative;
+      z-index:3;
+      max-width:560px;
+      font-size:clamp(1.15rem,4vw,1.65rem);
+      line-height:1.6;
+      color:#fff8e7;
+      opacity:0;
+      transform:translateY(12px);
+      animation:quoteIn 2.2s ease forwards 2.2s;
+      text-shadow:0 2px 18px rgba(0,0,0,.45);
+    }
+
+    .memory-sub{
+      display:block;
+      margin-top:14px;
+      font-size:.95rem;
+      color:#d8cfea;
+      opacity:.95;
+    }
+
+    .starfield{
+      position:absolute;
+      inset:0;
+      z-index:1;
+    }
+
+    .constellation-line{
+      position:absolute;
+      height:2px;
+      background:linear-gradient(90deg, rgba(255,255,255,.0), rgba(255,240,200,.95), rgba(255,255,255,.0));
+      transform-origin:left center;
+      opacity:0;
+      filter:drop-shadow(0 0 6px rgba(255,240,200,.55));
+    }
+
+    .star{
+      position:absolute;
+      width:8px;
+      height:8px;
+      border-radius:50%;
+      background:#fff6d6;
+      box-shadow:0 0 14px rgba(255,245,190,.85), 0 0 28px rgba(174,216,255,.28);
+      opacity:0;
+      transform:scale(.4);
+    }
+
+    .star.s1{animation:starPop 1.2s ease forwards .2s, twinkle 2.4s ease-in-out infinite 1.4s;}
+    .star.s2{animation:starPop 1.2s ease forwards .6s, twinkle 2.7s ease-in-out infinite 1.7s;}
+    .star.s3{animation:starPop 1.2s ease forwards 1s, twinkle 2.3s ease-in-out infinite 2s;}
+    .star.s4{animation:starPop 1.2s ease forwards 1.4s, twinkle 2.5s ease-in-out infinite 2.2s;}
+    .star.s5{animation:starPop 1.2s ease forwards 1.8s, twinkle 2.6s ease-in-out infinite 2.5s;}
+
+    .line1{animation:lineDraw 1s ease forwards 1.2s;}
+    .line2{animation:lineDraw 1s ease forwards 1.7s;}
+    .line3{animation:lineDraw 1s ease forwards 2.1s;}
+    .line4{animation:lineDraw 1s ease forwards 2.5s;}
+
+    .glow-final{
+      position:absolute;
+      inset:0;
+      background:radial-gradient(circle at center, rgba(255,227,157,.18) 0%, rgba(255,227,157,0) 45%);
+      z-index:2;
+      opacity:0;
+      animation:glowRise 3.2s ease forwards 1.6s;
+    }
+
+    .memory-actions{
+      position:absolute;
+      bottom:24px;
+      z-index:4;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:center;
+    }
+
+    .memory-btn{
+      border:0;
+      border-radius:14px;
+      padding:12px 16px;
+      min-height:46px;
+      cursor:pointer;
+      font:inherit;
+      font-weight:800;
+      color:#332000;
+      background:linear-gradient(180deg, #ffd166, #ffb703);
+      box-shadow:0 12px 30px rgba(0,0,0,.35);
+    }
+
+    @keyframes memoryDarken{
+      from{background:rgba(4,3,10,.05)}
+      to{background:rgba(4,3,10,.82)}
+    }
+
+    @keyframes starPop{
+      from{opacity:0; transform:scale(.2)}
+      to{opacity:1; transform:scale(1)}
+    }
+
+    @keyframes lineDraw{
+      from{opacity:0; transform:scaleX(.1)}
+      to{opacity:1; transform:scaleX(1)}
+    }
+
+    @keyframes quoteIn{
+      from{opacity:0; transform:translateY(12px)}
+      to{opacity:1; transform:none}
+    }
+
+    @keyframes glowRise{
+      from{opacity:0}
+      to{opacity:1}
+    }
+
+    @keyframes twinkle{
+      0%,100%{filter:brightness(1)}
+      50%{filter:brightness(1.45)}
+    }
+
+    @media (min-width:720px){
+      .hero,
+      .scene img{
+        max-height:68vh;
+      }
+    }
+  </style>
+</head>
+<body>
+  <audio id="mainTrack" preload="auto" src="sim_se_separa.mp3.mp3"></audio>
+  <audio id="endingTrack" preload="auto" src="musica_final.mp3"></audio>
+
+  <section id="intro" class="screen active">
+    <div class="wrap">
+      <div class="card">
+        <img src="ilustracao_etapas.png" class="hero" alt="Ilustração pixel" />
+        <div class="content center">
+          <div class="badge">Uma história que deixou consciência</div>
+          <h1>Uma travessia de memórias para Gabryel 🎮</h1>
+
+          <p>
+            Eu escolhi essa música porque ela me lembra muito um momento nosso:
+            você ficava pedindo pra eu cantar o refrão várias vezes, até eu conseguir cantar do jeito certo.
+          </p>
+
+          <p>
+            E, enquanto eu tentava procurar ela, ouvi vários rap de anime no caminho...
+            e isso me fez lembrar de muitos momentos nossos.
+            Eu chorei, porque foi como voltar por alguns instantes pra memórias que ainda moram em mim de algum jeito.
+          </p>
+
+          <div class="btns">
+            <button class="btn" id="startBtn">Começar história</button>
+            <button class="btn alt" id="musicBtnIntro">🎵 Música: on</button>
+            <button class="btn ghost" id="skipBtn">Ir para o final</button>
+          </div>
+
+          <p class="tiny">Dica: a música começa no primeiro toque em “Começar história”.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="story" class="screen">
+    <div class="story-shell">
+      <div class="card">
+        <div class="topbar">
+          <span class="pill">🎂 Gabryel</span>
+          <span class="pill">📖 Etapa <span id="chapterNum">1</span>/6</span>
+          <button class="pill" id="musicBtnStory" style="cursor:pointer;">🎵 Música: on</button>
+        </div>
+
+        <div class="scene fade" id="sceneWrap">
+          <img id="sceneImage" src="etapa_1.png" alt="Cena da etapa" />
+          <div class="overlay"></div>
+          <div class="chapter-title" id="chapterTitle">Abertura</div>
+        </div>
+      </div>
+
+      <div class="dialogue fade" id="dialogueBox">
+        <div class="speaker" id="speaker">Narrador</div>
+        <div class="text" id="storyText"></div>
+        <div class="hint" id="hintText">Toque em uma escolha para continuar.</div>
+        <div class="progress"><div class="bar" id="bar"></div></div>
+        <div class="choices" id="choices"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="end" class="screen">
+    <div class="wrap">
+      <div class="card">
+        <img src="final_personalizado.png" class="hero" alt="Imagem final" />
+        <div class="content">
+          <div class="badge">FINAL DESBLOQUEADO</div>
+          <h2 class="center">
+            Parabéns, Gabryel 🎉
+            <div class="fade-final">essa história existiu.</div>
+          </h2>
+
+          <div class="ending" id="endingText"></div>
+
+          <div class="btns">
+            <button class="btn" id="restartBtn">Recomeçar história</button>
+            <button class="btn alt" id="musicBtnEnd">🎵 Música: on</button>
+            <button class="btn ghost" id="saveMemoryBtn">guardar essa memória 💭</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="memory-overlay" id="memoryOverlay" aria-hidden="true">
+    <div class="memory-inner">
+      <div class="starfield">
+        <div class="star s1" style="left:18%; top:34%;"></div>
+        <div class="star s2" style="left:34%; top:22%;"></div>
+        <div class="star s3" style="left:52%; top:30%;"></div>
+        <div class="star s4" style="left:68%; top:20%;"></div>
+        <div class="star s5" style="left:78%; top:38%;"></div>
+
+        <div class="constellation-line line1" style="left:19%; top:35%; width:18%; transform:rotate(-20deg);"></div>
+        <div class="constellation-line line2" style="left:35%; top:24%; width:19%; transform:rotate(16deg);"></div>
+        <div class="constellation-line line3" style="left:53%; top:31%; width:18%; transform:rotate(-18deg);"></div>
+        <div class="constellation-line line4" style="left:69%; top:22%; width:14%; transform:rotate(34deg);"></div>
+      </div>
+
+      <div class="glow-final"></div>
+
+      <div class="memory-quote">
+        Algumas histórias não ficam…<br />
+        mas se tornam parte de quem nos tornamos.
+        <span class="memory-sub">essa história existiu.</span>
+      </div>
+
+      <div class="memory-actions">
+        <button class="memory-btn" id="closeMemoryBtn">voltar ao final</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (() => {
+      const screens = {
+        intro: document.getElementById('intro'),
+        story: document.getElementById('story'),
+        end: document.getElementById('end'),
+      };
+
+      const startBtn = document.getElementById('startBtn');
+      const skipBtn = document.getElementById('skipBtn');
+      const restartBtn = document.getElementById('restartBtn');
+
+      const storyText = document.getElementById('storyText');
+      const speaker = document.getElementById('speaker');
+      const choicesEl = document.getElementById('choices');
+      const chapterNum = document.getElementById('chapterNum');
+      const chapterTitle = document.getElementById('chapterTitle');
+      const hintText = document.getElementById('hintText');
+      const bar = document.getElementById('bar');
+      const endingText = document.getElementById('endingText');
+      const sceneImage = document.getElementById('sceneImage');
+      const sceneWrap = document.getElementById('sceneWrap');
+      const dialogueBox = document.getElementById('dialogueBox');
+
+      const saveMemoryBtn = document.getElementById('saveMemoryBtn');
+      const memoryOverlay = document.getElementById('memoryOverlay');
+      const closeMemoryBtn = document.getElementById('closeMemoryBtn');
+
+      const mainTrack = document.getElementById('mainTrack');
+      const endingTrack = document.getElementById('endingTrack');
+
+      const musicBtns = [
+        document.getElementById('musicBtnIntro'),
+        document.getElementById('musicBtnStory'),
+        document.getElementById('musicBtnEnd')
+      ];
+
+      let currentMusic = 'main';
+      let musicOn = true;
+
+      const chapters = [
+        {
+          title: "Abertura",
+          speaker: "Narrador",
+          image: "etapa_1.png",
+          text: `Hoje é o seu aniversário...
+e mesmo com tudo tão diferente, eu não poderia deixar essa data passar em silêncio.
+
+Essa é a primeira porta dessa história: o começo de uma travessia feita de lembranças, significado e verdade.`,
+          hint: "Comece pelo primeiro capítulo da memória.",
+          choices: [
+            { label: "Entrar na primeira lembrança", next: 1, primary: true }
+          ]
+        },
+        {
+          title: "Os 30 dias do livro",
+          speaker: "Memória 1",
+          image: "etapa_2.png",
+          text: `No primeiro aniversário que passei ao seu lado, durante 30 dias, todos os dias até chegar a data do seu aniversário, eu escrevia um pouco sobre as emoções que eu estava sentindo por você.
+
+Você sabe que eu sempre gostei de expressar minhas emoções por escrita.`,
+          hint: "Essa etapa fala sobre cuidado em forma de palavras.",
+          choices: [
+            { label: "Abrir a próxima memória", next: 2, primary: true },
+            { label: "Ficar mais um instante nessa cena", next: 1 }
+          ]
+        },
+        {
+          title: "A surpresa no quarto",
+          speaker: "Memória 2",
+          image: "etapa_3.png",
+          text: `No segundo aniversário, mesmo em meio às dificuldades, eu não deixei a data passar.
+
+Lembro da surpresa que preparei no seu quarto... e de como foi gostoso quando você deitou no chão, me puxou pra perto e ficamos conversando.`,
+          hint: "Aqui a história ganha calor e proximidade.",
+          choices: [
+            { label: "Continuar a história", next: 3, primary: true },
+            { label: "Rever essa lembrança", next: 2 }
+          ]
+        },
+        {
+          title: "Conexão verdadeira",
+          speaker: "Conexão",
+          image: "etapa_4.png",
+          text: `Eu sempre gostei desses momentos em que você se expressava, porque isso era difícil pra você.
+
+Eram nesses instantes que eu me sentia realmente conectada com você, de uma forma muito genuína.`,
+          hint: "Essa etapa existe para mostrar o que havia de mais real.",
+          choices: [
+            { label: "Seguir para a mudança do ciclo", next: 4, primary: true }
+          ]
+        },
+        {
+          title: "Tudo mudou",
+          speaker: "Narrador",
+          image: "etapa_5.png",
+          text: `Hoje, tudo mudou. Já não somos, já não temos.
+
+Ainda assim, algumas histórias não desaparecem: elas apenas se transformam em algo mais silencioso, mais maduro e mais sereno.`,
+          hint: "Agora a história sai da lembrança e entra na aceitação.",
+          choices: [
+            { label: "Chegar à mensagem final", next: 5, primary: true }
+          ]
+        },
+        {
+          title: "Propósito e boas escolhas",
+          speaker: "Mensagem final",
+          image: "etapa_6.png",
+          text: `Existe algo bonito dentro de você. Você é uma boa pessoa e tem um propósito bonito.
+
+Por isso, o desejo que fica é que você consiga enxergar isso também e fazer boas escolhas, escolhas alinhadas com a sua essência.`,
+          hint: "Última etapa: desbloquear a carta final.",
+          choices: [
+            { label: "Receber carta final de aniversário", next: "end", primary: true }
+          ]
+        }
+      ];
+
+      const finalMessage = `Existem pessoas que passam pela nossa vida…
+e existem aquelas que atravessam a nossa história.
+
+Algumas conexões não chegam para permanecer da forma que imaginamos,
+chegam para nos transformar.
+Para nos confrontar.
+Para nos revelar partes de nós que talvez nunca teríamos conhecido de outra forma.
+
+O que foi vivido com verdade não se apaga com o tempo,
+porque o que é real não depende de permanência para ter significado.
+O que é real se torna parte daquilo que nos constrói em silêncio.
+
+Nem toda história é feita para continuar…
+algumas são feitas para despertar consciência.
+
+E quando existe consciência, existe responsabilidade.
+Responsabilidade sobre quem escolhemos ser.
+Sobre o que alimentamos dentro de nós.
+Sobre o tipo de caminho que decidimos percorrer.
+
+Você não está aqui por acaso.
+Existe algo na sua essência que é valioso demais para ser desperdiçado em escolhas que te diminuem, que te afastam de quem você realmente pode ser.
+
+Por isso, hoje, o que eu desejo não é apenas felicidade,
+é lucidez.
+É maturidade.
+É coragem para fazer escolhas que estejam alinhadas com aquilo que te engrandece como ser humano.
+
+Que você compreenda o peso da própria existência.
+Que você entenda que viver vai muito além de apenas passar pelos dias.
+E que, quando olhar para a própria vida, consiga reconhecer que honrou o potencial que existe dentro de você.
+
+Algumas histórias não continuam…
+porque cumpriram o papel de nos levar até um nível de consciência que só seria possível através delas.
+
+E quando a gente entende isso…
+não existe perda.
+Existe significado.
+
+Que este novo ciclo te aproxime da sua verdade.
+Da sua essência.
+Do propósito que existe dentro de você.
+
+e que a vida te encontre disposto a se tornar quem você nasceu para ser.
+
+Feliz vida.
+
+✨
+
+essa história existiu.`;
+
+      endingText.textContent = finalMessage;
+
+      function showScreen(name) {
+        Object.values(screens).forEach(screen => screen.classList.remove('active'));
+        screens[name].classList.add('active');
+      }
+
+      function animateSwap(el) {
+        el.classList.remove('fade');
+        void el.offsetWidth;
+        el.classList.add('fade');
+      }
+
+      function setChapter(index) {
+        const c = chapters[index];
+        speaker.textContent = c.speaker;
+        storyText.textContent = c.text;
+        chapterNum.textContent = String(index + 1);
+        chapterTitle.textContent = c.title;
+        hintText.textContent = c.hint || "Toque para continuar.";
+        bar.style.width = `${((index + 1) / chapters.length) * 100}%`;
+        sceneImage.src = c.image;
+        renderChoices(c.choices);
+        animateSwap(sceneWrap);
+        animateSwap(dialogueBox);
+      }
+
+      function renderChoices(choices) {
+        choicesEl.innerHTML = "";
+
+        choices.forEach(choice => {
+          const btn = document.createElement('button');
+          btn.className = 'choice' + (choice.primary ? ' primary' : '');
+          btn.textContent = choice.label;
+
+          btn.addEventListener('click', () => {
+            if (choice.next === "end") {
+              setTimeout(() => {
+                goToEndScreen();
+              }, 300);
+            } else {
+              setChapter(choice.next);
+            }
+          });
+
+          choicesEl.appendChild(btn);
+        });
+      }
+
+      function updateMusicButtons() {
+        musicBtns.forEach(btn => {
+          if (!btn) return;
+          btn.textContent = musicOn ? '🎵 Música: on' : '🎵 Música: off';
+        });
+      }
+
+      function fadeInAudio(audio, target = 0.55, step = 0.03, intervalMs = 180) {
+        audio.volume = 0;
+        audio.play().then(() => {
+          let v = 0;
+          const fade = setInterval(() => {
+            v = Math.min(target, v + step);
+            audio.volume = v;
+            if (v >= target) clearInterval(fade);
+          }, intervalMs);
+        }).catch(() => {});
+      }
+
+      function fadeOutAudio(audio, reset = false) {
+        if (!audio) return;
+        let v = audio.volume || 0.55;
+
+        const fade = setInterval(() => {
+          v = Math.max(0, v - 0.05);
+          audio.volume = v;
+
+          if (v <= 0) {
+            clearInterval(fade);
+            audio.pause();
+            if (reset) {
+              audio.currentTime = 0;
+            }
+          }
+        }, 120);
+      }
+
+      function playMainTrack() {
+        if (!mainTrack) return;
+
+        currentMusic = 'main';
+        musicOn = true;
+
+        endingTrack.pause();
+        endingTrack.currentTime = 0;
+
+        mainTrack.pause();
+        mainTrack.currentTime = 0;
+
+        fadeInAudio(mainTrack, 0.55, 0.04, 180);
+        updateMusicButtons();
+      }
+
+      function stopMainTrack(reset = true) {
+        if (!mainTrack) return;
+        fadeOutAudio(mainTrack, reset);
+      }
+
+      function playEndingTrack() {
+        if (!endingTrack) return;
+
+        currentMusic = 'ending';
+        musicOn = true;
+
+        stopMainTrack(false);
+
+        endingTrack.pause();
+        endingTrack.currentTime = 0;
+
+        fadeInAudio(endingTrack, 0.6, 0.03, 200);
+        updateMusicButtons();
+      }
+
+      function stopEndingTrack(reset = true) {
+        if (!endingTrack) return;
+        fadeOutAudio(endingTrack, reset);
+      }
+
+      function toggleMusic() {
+        const activeTrack = currentMusic === 'ending' ? endingTrack : mainTrack;
+        if (!activeTrack) return;
+
+        if (activeTrack.paused) {
+          activeTrack.play().then(() => {
+            musicOn = true;
+            updateMusicButtons();
+          }).catch(() => {});
+        } else {
+          activeTrack.pause();
+          musicOn = false;
+          updateMusicButtons();
+        }
+      }
+
+      function goToEndScreen() {
+        playEndingTrack();
+        showScreen('end');
+      }
+
+      function openMemoryOverlay() {
+        memoryOverlay.classList.add('active');
+        memoryOverlay.setAttribute('aria-hidden', 'false');
+      }
+
+      function closeMemoryOverlay() {
+        memoryOverlay.classList.remove('active');
+        memoryOverlay.setAttribute('aria-hidden', 'true');
+      }
+
+      startBtn.addEventListener('click', () => {
+        closeMemoryOverlay();
+        setChapter(0);
+        showScreen('story');
+        playMainTrack();
+      });
+
+      skipBtn.addEventListener('click', () => {
+        goToEndScreen();
+      });
+
+      restartBtn.addEventListener('click', () => {
+        closeMemoryOverlay();
+        stopEndingTrack(true);
+        setChapter(0);
+        showScreen('story');
+        playMainTrack();
+      });
+
+      musicBtns.forEach(btn => btn && btn.addEventListener('click', toggleMusic));
+
+      if (saveMemoryBtn) {
+        saveMemoryBtn.addEventListener('click', openMemoryOverlay);
+      }
+
+      if (closeMemoryBtn) {
+        closeMemoryBtn.addEventListener('click', closeMemoryOverlay);
+      }
+
+      updateMusicButtons();
+      setChapter(0);
+    })();
+  </script>
+</body>
+</html>
