@@ -529,9 +529,6 @@
 
         <div class="scene fade" id="sceneWrap">
           <img id="sceneImage" src="etapa_1.png" alt="Cena da etapa" />
-          <video id="sceneVideo" playsinline muted loop style="display:none; width:100%; max-height:72vh; object-fit:contain; background:#10091f;">
-  <source src="video memoria.mp4" type="video/mp4">
-</video>
           <div class="overlay"></div>
           <div class="chapter-title" id="chapterTitle">Abertura</div>
         </div>
@@ -600,8 +597,6 @@
   </div>
 
   <script>
-
-
     (() => {
       const screens = {
         intro: document.getElementById('intro'),
@@ -641,110 +636,83 @@
       let currentMusic = 'main';
       let musicOn = true;
 
-const chapters = [
-  {
-    title: "Abertura",
-    speaker: "Narrador",
-    image: "etapa_1.png",
-    text: `Hoje é o seu aniversário...
+      const chapters = [
+        {
+          title: "Abertura",
+          speaker: "Narrador",
+          image: "etapa_1.png",
+          text: `Hoje é o seu aniversário...
 e mesmo com tudo tão diferente, eu não poderia deixar essa data passar em silêncio.
 
 Essa é a primeira porta dessa história: o começo de uma travessia feita de lembranças, significado e verdade.`,
-    hint: "Comece pelo primeiro capítulo da memória.",
-    choices: [
-      { label: "Entrar na primeira lembrança", next: 1, primary: true }
-    ]
-  },
-  {
-    title: "Os 30 dias do livro",
-    speaker: "Memória 1",
-    image: "etapa_2.png",
-    text: `No primeiro aniversário que passei ao seu lado, durante 30 dias, todos os dias até chegar a data do seu aniversário, eu escrevia um pouco sobre as emoções que eu estava sentindo por você.
+          hint: "Comece pelo primeiro capítulo da memória.",
+          choices: [
+            { label: "Entrar na primeira lembrança", next: 1, primary: true }
+          ]
+        },
+        {
+          title: "Os 30 dias do livro",
+          speaker: "Memória 1",
+          image: "etapa_2.png",
+          text: `No primeiro aniversário que passei ao seu lado, durante 30 dias, todos os dias até chegar a data do seu aniversário, eu escrevia um pouco sobre as emoções que eu estava sentindo por você.
 
 Você sabe que eu sempre gostei de expressar minhas emoções por escrita.`,
-    hint: "Essa etapa fala sobre cuidado em forma de palavras.",
-    choices: [
-      { label: "Abrir a próxima memória", next: 2, primary: true },
-      { label: "Ficar mais um instante nessa cena", next: 1 }
-    ]
-  },
-  {
-    title: "A surpresa no quarto",
-    speaker: "Memória 2",
-    image: "etapa_3.png",
-    text: `No segundo aniversário, mesmo em meio às dificuldades, eu não deixei a data passar.
+          hint: "Essa etapa fala sobre cuidado em forma de palavras.",
+          choices: [
+            { label: "Abrir a próxima memória", next: 2, primary: true },
+            { label: "Ficar mais um instante nessa cena", next: 1 }
+          ]
+        },
+        {
+          title: "A surpresa no quarto",
+          speaker: "Memória 2",
+          image: "etapa_3.png",
+          text: `No segundo aniversário, mesmo em meio às dificuldades, eu não deixei a data passar.
 
 Lembro da surpresa que preparei no seu quarto... e de como foi gostoso quando você deitou no chão, me puxou pra perto e ficamos conversando.`,
-    hint: "Aqui a história ganha calor e proximidade.",
-    choices: [
-      { label: "Continuar a história", next: 3, primary: true },
-      { label: "Rever essa lembrança", next: 2 }
-    ]
-  },
-  {
-    title: "Conexão verdadeira",
-    speaker: "Conexão",
-    image: "etapa_4.png",
-    text: `Eu sempre gostei desses momentos em que você se expressava, porque isso era difícil pra você.
+          hint: "Aqui a história ganha calor e proximidade.",
+          choices: [
+            { label: "Continuar a história", next: 3, primary: true },
+            { label: "Rever essa lembrança", next: 2 }
+          ]
+        },
+        {
+          title: "Conexão verdadeira",
+          speaker: "Conexão",
+          image: "etapa_4.png",
+          text: `Eu sempre gostei desses momentos em que você se expressava, porque isso era difícil pra você.
 
 Eram nesses instantes que eu me sentia realmente conectada com você, de uma forma muito genuína.`,
-    hint: "Essa etapa existe para mostrar o que havia de mais real.",
-    choices: [
-      { label: "Seguir para a mudança do ciclo", next: 4, primary: true }
-    ]
-  },
-  {
-    title: "Tudo mudou",
-    speaker: "Narrador",
-    image: "etapa_5.png",
-    text: `Hoje, tudo mudou. Já não somos, já não temos.
+          hint: "Essa etapa existe para mostrar o que havia de mais real.",
+          choices: [
+            { label: "Seguir para a mudança do ciclo", next: 4, primary: true }
+          ]
+        },
+        {
+          title: "Tudo mudou",
+          speaker: "Narrador",
+          image: "etapa_5.png",
+          text: `Hoje, tudo mudou. Já não somos, já não temos.
 
 Ainda assim, algumas histórias não desaparecem: elas apenas se transformam em algo mais silencioso, mais maduro e mais sereno.`,
-    hint: "Agora a história sai da lembrança e entra na aceitação.",
-    choices: [
-      { label: "Seguir", next: 5, primary: true }
-    ]
-  },
-
-  // ✨ NOVA ETAPA INSERIDA AQUI
-  {
-    title: "O que o vento levou",
-    speaker: "Entre memórias",
-    image: "etapa_6.png",
-    text: `eu guardei esse raminho desde o começo…
-como quem tenta segurar o tempo nas mãos.
-
-mas o vento…
-o vento sempre encontra um jeito.
-
-ele levou dias que não voltam,
-levou versões nossas que já não existem mais,
-levou palavras que ficaram no meio do caminho…
-
-mas não levou tudo.
-
-o que foi verdadeiro
-não se perde,
-só se transforma. 🌿`,
-    hint: "Nem tudo fica… mas nada verdadeiro se perde.",
-    choices: [
-      { label: "Entender o que ficou", next: 6, primary: true }
-    ]
-  },
-
-  {
-    title: "Propósito e boas escolhas",
-    speaker: "Mensagem final",
-    image: "etapa_6.png",
-    text: `Existe algo bonito dentro de você. Você é uma boa pessoa e tem um propósito bonito.
+          hint: "Agora a história sai da lembrança e entra na aceitação.",
+          choices: [
+            { label: "Chegar à mensagem final", next: 5, primary: true }
+          ]
+        },
+        {
+          title: "Propósito e boas escolhas",
+          speaker: "Mensagem final",
+          image: "etapa_6.png",
+          text: `Existe algo bonito dentro de você. Você é uma boa pessoa e tem um propósito bonito.
 
 Por isso, o desejo que fica é que você consiga enxergar isso também e fazer boas escolhas, escolhas alinhadas com a sua essência.`,
-    hint: "Última etapa: desbloquear a carta final.",
-    choices: [
-      { label: "Receber carta final de aniversário", next: "end", primary: true }
-    ]
-  }
-];
+          hint: "Última etapa: desbloquear a carta final.",
+          choices: [
+            { label: "Receber carta final de aniversário", next: "end", primary: true }
+          ]
+        }
+      ];
 
       const finalMessage = `Existem pessoas que passam pela nossa vida…
 e existem aquelas que atravessam a nossa história.
@@ -818,20 +786,7 @@ essa história existiu.`;
         chapterTitle.textContent = c.title;
         hintText.textContent = c.hint || "Toque para continuar.";
         bar.style.width = `${((index + 1) / chapters.length) * 100}%`;
-       const sceneVideo = document.getElementById('sceneVideo');
-
-if (c.video) {
-  sceneImage.style.display = 'none';
-  sceneVideo.style.display = 'block';
-  sceneVideo.src = c.video;
-  sceneVideo.currentTime = 0;
-  sceneVideo.play().catch(()=>{});
-} else {
-  sceneVideo.pause();
-  sceneVideo.style.display = 'none';
-  sceneImage.style.display = 'block';
-  sceneImage.src = c.image;
-}
+        sceneImage.src = c.image;
         renderChoices(c.choices);
         animateSwap(sceneWrap);
         animateSwap(dialogueBox);
