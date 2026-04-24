@@ -6,6 +6,70 @@
   <title>Feliz Vida 🎉 - Gabryel</title>
 
   <style>
+    .memory-scene {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  opacity: 0;
+  transition: opacity 1.5s ease;
+}
+
+.memory-scene.show {
+  opacity: 1;
+}
+
+.memory-video {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(0.6) blur(2px);
+}
+
+.overlay {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, rgba(0,0,0,0.2), rgba(0,0,0,0.9));
+}
+
+.memory-text {
+  position: relative;
+  color: #fff;
+  max-width: 85%;
+  font-size: 14px;
+  line-height: 1.6;
+  text-align: left;
+  z-index: 2;
+  white-space: pre-line;
+}
+
+.constellation {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.star {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  background: white;
+  border-radius: 50%;
+  opacity: 0;
+  animation: fadeIn 2s forwards;
+}
+
+@keyframes fadeIn {
+  to { opacity: 1; }
+}
     :root{
       --bg1:#120b24;
       --bg2:#26164b;
@@ -713,6 +777,94 @@ Por isso, o desejo que fica é que você consiga enxergar isso também e fazer b
           ]
         }
       ];
+      const memoryBtn = document.getElementById("saveMemoryBtn");
+const memoryScene = document.getElementById("memoryScene");
+const memoryText = document.getElementById("memoryText");
+const windSound = document.getElementById("windSound");
+const constellation = document.getElementById("constellation");
+
+const textContent = `eu guardei esse raminho desde o começo…
+como quem tenta segurar o tempo nas mãos.
+
+como se, de alguma forma,
+aquilo pudesse impedir que as coisas mudassem.
+
+mas o vento…
+o vento sempre encontra um jeito.
+
+ele passa devagar,
+quase sem pedir permissão…
+e quando a gente percebe,
+já levou.
+
+levou dias que não voltam,
+levou versões nossas que já não existem mais,
+levou palavras que ficaram no meio do caminho…
+
+levou até aquilo que eu achei que seria pra sempre.
+
+mas não levou tudo.
+
+porque o que foi verdadeiro
+não se desfaz com o tempo…
+
+só muda de forma,
+só encontra outro lugar pra existir.
+
+e talvez seja isso que fica.
+
+não a história como ela era…
+mas o que ela se tornou dentro de mim. 🌿`;
+
+memoryBtn.addEventListener("click", () => {
+  memoryScene.classList.remove("hidden");
+
+  setTimeout(() => {
+    memoryScene.classList.add("show");
+    windSound.volume = 0.4;
+    windSound.play();
+    startTyping();
+  }, 100);
+});
+
+function startTyping() {
+  let i = 0;
+
+  function type() {
+    if (i < textContent.length) {
+      memoryText.innerHTML += textContent.charAt(i);
+      i++;
+      setTimeout(type, 35);
+    } else {
+      setTimeout(showConstellation, 2000);
+    }
+  }
+
+  type();
+}
+
+function showConstellation() {
+  memoryText.style.opacity = 0;
+
+  constellation.classList.remove("hidden");
+
+  for (let i = 0; i < 40; i++) {
+    let star = document.createElement("div");
+    star.classList.add("star");
+    star.style.top = Math.random() * 100 + "%";
+    star.style.left = Math.random() * 100 + "%";
+    constellation.appendChild(star);
+  }
+
+  setTimeout(() => {
+    constellation.innerHTML += `
+      <div style="position:absolute;top:40%;width:100%;text-align:center;color:white;font-size:16px;">
+        Algumas histórias não ficam…<br>
+        mas se tornam parte de quem nos tornamos.
+      </div>
+    `;
+  }, 2000);
+}
 
       const finalMessage = `Existem pessoas que passam pela nossa vida…
 e existem aquelas que atravessam a nossa história.
@@ -956,5 +1108,21 @@ essa história existiu.`;
       setChapter(0);
     })();
   </script>
+  <!-- CENA FINAL - GUARDAR MEMÓRIA -->
+<div id="memoryScene" class="memory-scene hidden">
+  
+  <video id="memoryVideo" class="memory-video" muted playsinline>
+    <source src="video memoria.mp4" type="video/mp4">
+  </video>
+
+  <div class="overlay"></div>
+
+  <div class="memory-text" id="memoryText"></div>
+
+  <div id="constellation" class="constellation hidden"></div>
+
+</div>
+
+<audio id="windSound" src="Efeitos sonoro vento rapido Vento fraco - Birdsong BR (youtube).mp3" loop></audio>
 </body>
 </html>
